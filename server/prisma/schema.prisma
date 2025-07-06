@@ -1,0 +1,52 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  name      String
+  role      Role     @default(USER)
+  polls     Poll[]
+  allowedPolls Poll[] @relation("allowedPolls")
+  votes     Vote[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Poll {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String?
+  options     Json
+  isPublic    Boolean  @default(true)
+  isActive    Boolean  @default(true)
+  expiresAt   DateTime
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  authorId    Int
+  author      User     @relation(fields: [authorId], references: [id])
+  allowedUsers User[]  @relation("allowedPolls")
+  votes       Vote[]
+}
+
+model Vote {
+  id        Int      @id @default(autoincrement())
+  pollId    Int
+  poll      Poll     @relation(fields: [pollId], references: [id])
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  option    String
+  createdAt DateTime @default(now())
+}
+
+enum Role {
+  USER
+  ADMIN
+}
