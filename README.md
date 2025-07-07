@@ -71,6 +71,17 @@ npm run start:prod
 * `POST /polls/:id/vote` - Vote on a poll
 * `GET /polls/:id/results` - Get poll results
 
+## 🧪 Testing & Code Quality
+
+This project uses **ESLint** with the NestJS/TypeScript preset to enforce
+consistent style and catch common issues early.
+
+```bash
+# Run the linter
+npm run lint             # or: npx eslint .
+```
+
+
 ## Database Management
 
 To access the database:
