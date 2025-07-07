@@ -106,8 +106,14 @@ export class PollService {
     if (poll.authorId !== userId) {
       throw new ForbiddenException('You can only delete your own polls');
     }
-
-    return this.prisma.poll.delete({ where: { id } });
+    return this.prisma.$transaction(async (prisma) => {
+      await prisma.vote.deleteMany({
+        where: { pollId: id }
+      });
+      return prisma.poll.delete({ 
+        where: { id } 
+      });
+    });
   }
 
   async vote(pollId: number, userId: number, voteDto: VoteDto) {

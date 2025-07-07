@@ -31,7 +31,7 @@ model Poll {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   authorId    Int
-  author      User     @relation(fields: [authorId], references: [id])
+  author      User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
   allowedUsers User[]  @relation("allowedPolls")
   votes       Vote[]
 }
@@ -39,9 +39,9 @@ model Poll {
 model Vote {
   id        Int      @id @default(autoincrement())
   pollId    Int
-  poll      Poll     @relation(fields: [pollId], references: [id])
+  poll      Poll     @relation(fields: [pollId], references: [id], onDelete: Cascade)
   userId    Int
-  user      User     @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   option    String
   createdAt DateTime @default(now())
 }
