@@ -2,6 +2,16 @@
 
 A Nest.js backend for a polling system with JWT authentication and role-based access control.
 
+## Use of AI-Assisted Development Tools
+
+To enhance productivity and ensure code quality during the development of this project, I have utilized the following AI tools:
+
+* **ChatGPT  :** Used for clarifying NestJS concepts, converting JavaScript to TypeScript, generating boilerplate code (like DTOs), and debugging issues faster.
+* **Claude AI :** Assisted in code structure planning and refining logic for authentication and role-based access control.
+* **DeepSeek:** Optimizing some parts for performance and readability.
+
+These tools significantly improved my development speed by reducing time spent on repetitive coding and by helping with best practices in real time. However, all the final code was carefully reviewed, tested, and adjusted manually to meet the assignment requirements and ensure full understanding.
+
 ## Features
 
 - User authentication (register/login) with JWT
@@ -44,7 +54,6 @@ A Nest.js backend for a polling system with JWT authentication and role-based ac
    npx prisma db seed
    ```
 
-
 ## Running the Application
 
 ```
@@ -61,7 +70,6 @@ npm run start:prod
 * `GET /polls/:id` - Get poll details
 * `POST /polls/:id/vote` - Vote on a poll
 * `GET /polls/:id/results` - Get poll results
-
 
 ## Database Management
 
@@ -96,19 +104,17 @@ A simple HTML/CSS/JS frontend for the Polling System.
 ## Setup
 
 1. Clone the repository
+
    ```bash
    git clone https://github.com/azi74/pollingSystem.git
    cd pollingSystem/client
    ```
-
-
 2. Configure the backend URL
    Edit `js/utils.js` and set the correct `API_BASE_URL`:
 
    ```
    const API_BASE_URL = 'http://your-backend-url:3000';
    ```
-
 
 ## Running the Application
 

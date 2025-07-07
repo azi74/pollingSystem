@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 async function loadAdminPolls() {
   try {
-    const polls = await makeRequest('/polls');
+    const polls = await window.authUtils.makeRequest('/polls');
     const pollsList = document.getElementById('pollsList');
     pollsList.innerHTML = '';
     
@@ -51,7 +51,7 @@ async function loadAdminPolls() {
 
 async function loadUserPolls() {
   try {
-    const polls = await makeRequest('/polls');
+    const polls = await window.authUtils.makeRequest('/polls');
     const pollsList = document.getElementById('pollsList');
     pollsList.innerHTML = '';
     
@@ -128,7 +128,7 @@ function setupPollModal() {
         allowedUserIds: isPublic ? [] : allowedUsers.split(',').map(id => parseInt(id.trim()))
       };
       
-      await makeRequest('/polls', 'POST', pollData);
+      await window.authUtils.makeRequest('/polls', 'POST', pollData);
       modal.style.display = 'none';
       createPollForm.reset();
       await loadAdminPolls();
@@ -141,12 +141,12 @@ function setupPollModal() {
 async function loadPollDetails() {
   const pollId = new URLSearchParams(window.location.search).get('id');
   if (!pollId) {
-    window.location.href = getUserRole() === 'ADMIN' ? 'admin.html' : 'user.html';
+    window.location.href = window.authUtils.getUserRole() === 'ADMIN' ? 'admin.html' : 'user.html';
     return;
   }
   
   try {
-    const response = await makeRequest(`/polls/${pollId}/results`);
+    const response = await window.authUtils.makeRequest(`/polls/${pollId}/results`);
     const { poll, results } = response;
     
     const pollDetails = document.getElementById('pollDetails');
@@ -174,7 +174,7 @@ async function loadPollDetails() {
         e.preventDefault();
         const option = document.getElementById('voteOption').value;
         try {
-          await makeRequest(`/polls/${pollId}/vote`, 'POST', { option });
+          await window.authUtils.makeRequest(`/polls/${pollId}/vote`, 'POST', { option });
           alert('Vote submitted successfully!');
           await loadPollDetails();
         } catch (error) {
@@ -201,7 +201,7 @@ async function loadPollDetails() {
     `;
   } catch (error) {
     console.error('Failed to load poll details:', error);
-    window.location.href = getUserRole() === 'ADMIN' ? 'admin.html' : 'user.html';
+    window.location.href = window.authUtils.getUserRole() === 'ADMIN' ? 'admin.html' : 'user.html';
   }
 }
 
@@ -212,7 +212,7 @@ function viewPollDetails(pollId) {
 
 async function editPoll(pollId) {
   try {
-    const poll = await makeRequest(`/polls/${pollId}`);
+    const poll = await window.authUtils.makeRequest(`/polls/${pollId}`);
     
     const modal = document.getElementById('createPollModal');
     const modalTitle = modal.querySelector('h2');
@@ -243,7 +243,7 @@ async function editPoll(pollId) {
       expiresAt.setMinutes(expiresAt.getMinutes() + duration);
       
       try {
-        await makeRequest(`/polls/${pollId}`, 'PUT', {
+        await window.authUtils.makeRequest(`/polls/${pollId}`, 'PUT', {
           title,
           description,
           options,
@@ -269,7 +269,7 @@ async function deletePoll(pollId) {
   if (!confirm('Are you sure you want to delete this poll?')) return;
   
   try {
-    await makeRequest(`/polls/${pollId}`, 'DELETE');
+    await window.authUtils.makeRequest(`/polls/${pollId}`, 'DELETE');
     await loadAdminPolls();
   } catch (error) {
     console.error('Failed to delete poll:', error);
